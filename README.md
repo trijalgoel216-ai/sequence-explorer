@@ -47,7 +47,9 @@ It prints 37 lines of test results and ends with `All tests finished`. Each line
 
 ## What I learned
 
-(Write 3 bullets here in your own words before publishing.)
+- I changed one line in `reverse_complement` by mistake, writing `=` where I needed `+`. The function silently returned an empty string, and I only found out in a code review, because I had switched my tests off. Now I keep all my tests running.
+- I write down what I expect a program to print before I run it. When the output did not match, for example when my reverse-complement tests were accidentally calling `complement`, the mismatch told me where to look.
+- I can explain why the insulin protein is 110 amino acids and not 111: the last codon, TAG, is a stop signal and does not code for an amino acid. I also learned that the cell builds insulin as one long chain and then cuts it into pieces: signal peptide, B chain, C-peptide and A chain.
 
 ## Limits
 
