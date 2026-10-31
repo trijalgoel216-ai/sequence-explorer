@@ -103,3 +103,9 @@ search_both_strands - stores the orfs form both strands in a dictionary using re
 
 34 - Why is the 110-letter ORF more convincing than the 49-letter one?
 Because it is less likely that it was a chance orf due to random stop codons.A random stretch of DNA reaches 110 codons without a stop only about 0.5% of the time, but 49 codons about 10% of the time. So 110 is much less likely to be chance.
+
+35 - What does .strip() do, and why did we need it?
+It removes the new line character and any spaces too, we need it to remove any blank lines and spaces in the sequence.
+
+36 - why is it better to read the file than to paste the letters in the code?
+It is easier to read any file automatically rather than pasting it and manually pasting also invites errros.can now run the tool on any gene, not only insulin.

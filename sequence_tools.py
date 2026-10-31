@@ -161,6 +161,16 @@ def print_report(dna, min_length):
 
 
 
+def read_fasta(path):
+    sequence = ""
+    with open(path) as file:
+        for line in file:
+            line = line.strip()
+            if not line.startswith(">"):
+                sequence = sequence + line
+        return sequence
+
+
 # ---- TESTS ----
 
 #GC CONTENT
@@ -266,5 +276,8 @@ print(len(list_orfs(full_sequence, 49)))
 
 print_report(full_sequence, 30)
 print_report(full_sequence, 111)
+
+print(len(read_fasta("insulin.fasta")))
+print(read_fasta("insulin.fasta") == full_sequence)
 
 print("All tests finished")
