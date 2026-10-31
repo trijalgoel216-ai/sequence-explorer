@@ -104,6 +104,27 @@ def count_bases(seq):
     return bases
 
 
+def orf_from(dna, start):
+    dna = dna.upper()
+    start_codon = dna[start:start+3]
+    if start_codon != "ATG":
+        return None
+    protein = ""
+    for j in range(start, len(dna), 3):
+        codon_orf = dna[j:j+3]
+        if len(codon_orf) < 3:
+            return None
+        codon_acid = codon_table[codon_orf]
+        if codon_acid == "*":
+            return protein
+        else:
+            protein = protein + codon_acid
+    return None 
+
+    
+
+
+
 
 # ---- TESTS ----
 
@@ -173,5 +194,11 @@ try:
 except ValueError as error:
     print("Caught a problem:", error)
 
+print(orf_from("CCATGGCCTAAGG", 2))
+print(orf_from("CCATGGCCGG", 2))
+print(orf_from("CCATGGCC", 0))
+print(orf_from(full_sequence, start_position) == insulin_protein)
+print(orf_from("ATGGCCGCC", 0))
+print(orf_from("atggcctaa", 0))
 
 print("All tests finished")

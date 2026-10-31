@@ -56,3 +56,12 @@ Functions raise the error cause we are telling specifically to raise the error a
 
 19 - Why is it better to define PAIRS once?
 Because if we want to do any change in the dictionary, we can do it at once. With one PAIRS, the two functions can never disagree.
+
+20 - orf_from(full_sequence, start_position): will this give the same protein as insulin_protein?
+Yes
+
+21- why does the function return None instead of an empty string?
+An empty string is a real value, and None means “no value”. The point is this: None says “there is no answer here”, while an empty string would be a real answer that happens to be empty. A function that returns None lets the caller ask “did I get an answer?” and not confuse “no ORF” with “an ORF with an empty protein”
+
+22 - Why was your first condition always True?
+Becuause one condtion was always True since a codon cant be all 3 types of stop codon at once and also other types of codon also returned True.with or, one true part makes the whole condition true.
