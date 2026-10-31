@@ -280,4 +280,6 @@ print_report(full_sequence, 111)
 print(len(read_fasta("insulin.fasta")))
 print(read_fasta("insulin.fasta") == full_sequence)
 
+print_report(read_fasta("hbb.fasta"), 100)
+
 print("All tests finished")
