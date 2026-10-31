@@ -135,6 +135,18 @@ def search_both_strands(dna):
     strands = {"strand 1": find_orfs(dna), "strand 2":find_orfs(reverse_complement(dna))}
     return strands
 
+def list_orfs(dna, min_length):
+    data = search_both_strands(dna)
+    found = []
+    for strand_name in data:
+        for position in data[strand_name]:
+            protein = data[strand_name][position]
+            if len(protein) >= min_length:
+                found.append((len(protein), strand_name, position, protein))
+
+    return sorted(found, reverse = True)
+
+
 
 
 # ---- TESTS ----
@@ -233,5 +245,11 @@ for strand in result:
     for position in result[strand]:
         print(strand, position, len(result[strand][position]))
 
+
+print(len(list_orfs(full_sequence, 30)))
+print(len(list_orfs(full_sequence, 50)))
+print(len(list_orfs(full_sequence, 107)))
+print(len(list_orfs(full_sequence, 111)))
+print(len(list_orfs(full_sequence, 49)))
 
 print("All tests finished")

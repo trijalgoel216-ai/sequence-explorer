@@ -82,4 +82,10 @@ Beacause oen strand makes diff protein, another strand produces diff protein.Gen
 Genome is the whole DNA of the humans, and gene is part of the genome which makes the proteins. this holds for any organism, not just humans.
 
 28 - what does a position on strand 2 mean?
-These are strand 2's own postions and diff form strand 1
+These are strand 2's own postions and diff form strand 1.positions on strand 2 are counted from the start of strand 2’s own reading.
+
+29 - why drop the very short ORFs? Use the chance idea.
+Because short orfs can be just by chance and long can be proetein likely, becaause stop codon appear on avg after every 21 codons.A long ORF is very unlikely to appear by chance, so it’s probably a real gene.
+
+30 - what is the difference between print and return?
+the caller fucntion can access the value the return delivers., while print just prints it when the function runs and then forgets it.
