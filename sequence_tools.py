@@ -122,7 +122,14 @@ def orf_from(dna, start):
     return None 
 
     
-
+def find_orfs(dna):
+    dna = dna.upper()
+    orfs = {}
+    for position in range(len(dna)):
+        answer = orf_from(dna, position)
+        if answer is not None:
+            orfs[position] = answer
+    return orfs
 
 
 
@@ -200,5 +207,18 @@ print(orf_from("CCATGGCC", 0))
 print(orf_from(full_sequence, start_position) == insulin_protein)
 print(orf_from("ATGGCCGCC", 0))
 print(orf_from("atggcctaa", 0))
+
+
+print(find_orfs("CCATGGCCTAAGG"))
+print(find_orfs("ATGATGTAA"))
+print(find_orfs("CCCC"))
+print(find_orfs(full_sequence)[start_position] == insulin_protein)
+
+orfs = find_orfs(full_sequence)
+for position in orfs:
+    print(position, len(orfs[position]))
+
+print(orf_from(full_sequence, 340))
+
 
 print("All tests finished")

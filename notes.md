@@ -65,3 +65,9 @@ An empty string is a real value, and None means “no value”. The point is thi
 
 22 - Why was your first condition always True?
 Becuause one condtion was always True since a codon cant be all 3 types of stop codon at once and also other types of codon also returned True.with or, one true part makes the whole condition true.
+
+23 - Why does find_orfs call orf_from at every position, and not only at the ATG’s?
+Becuase it is in a loop and checks every letter of the sequence.
+
+24 - In the result dictionary, what does a key mean, and what does a value mean?
+Key is position and value is protein
