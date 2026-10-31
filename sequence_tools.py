@@ -148,6 +148,18 @@ def list_orfs(dna, min_length):
 
 
 
+def print_report(dna, min_length):
+    found_list = list_orfs(dna, min_length)
+    print(f"ORF report: minimum length {min_length} amino acids")
+    if len(found_list) == 0:
+        print(f"No ORFs of at least {min_length} amino acids found.")
+        return
+    else:
+        for len_protein, strand_name, position, protein in found_list:
+            print(f"{strand_name} | start {position} | {len_protein} amino acids | {protein[:10]}...")
+        print(f"Total: {len(found_list)}")
+
+
 
 # ---- TESTS ----
 
@@ -251,5 +263,8 @@ print(len(list_orfs(full_sequence, 50)))
 print(len(list_orfs(full_sequence, 107)))
 print(len(list_orfs(full_sequence, 111)))
 print(len(list_orfs(full_sequence, 49)))
+
+print_report(full_sequence, 30)
+print_report(full_sequence, 111)
 
 print("All tests finished")

@@ -1,6 +1,6 @@
 # sequence-explorer
 
-A small Python tool that reads a DNA sequence, analyses it, and translates it into a protein. It is a learning project, built step by step and tested on one gene: human insulin.
+A small Python tool that reads a DNA sequence, analyses it, translates it into a protein, and searches both DNA strands for possible genes. It is a learning project, built step by step and tested on one gene: human insulin.
 
 ## What it does
 
@@ -8,6 +8,11 @@ A small Python tool that reads a DNA sequence, analyses it, and translates it in
 - `complement(seq)` and `reverse_complement(seq)`: the partner DNA strand.
 - `translate(dna)`: cuts DNA into codons (groups of 3 letters) and translates them into a protein, stopping at the first stop codon.
 - `count_bases(seq)`: counts the A, T, C and G letters.
+- `orf_from(dna, start)`: checks whether a complete open reading frame (ORF) starts at a given position. An ORF starts with `ATG`, is read in codons, and ends at a stop codon.
+- `find_orfs(dna)`: runs `orf_from` at every position and keeps every complete ORF.
+- `search_both_strands(dna)`: searches the DNA as given (strand 1) and its partner strand (strand 2).
+- `list_orfs(dna, min_length)`: keeps only ORFs of at least `min_length` amino acids and sorts them longest first.
+- `print_report(dna, min_length)`: prints a readable report.
 - Splits the insulin protein into its parts: signal peptide, B chain, C-peptide and A chain.
 - Accepts upper-case and lower-case letters, and raises a clear error for invalid input.
 
@@ -27,6 +32,25 @@ A small Python tool that reads a DNA sequence, analyses it, and translates it in
 | KR cut site | 2 |
 | A chain | 21 |
 
+## The ORF finder
+
+On the insulin DNA, with a minimum length of 30 amino acids, the report is:
+
+```
+ORF report: minimum length 30 amino acids
+strand 1 | start 59 | 110 amino acids | MALWMRLLPL...
+strand 1 | start 71 | 106 amino acids | MRLLPLLALL...
+strand 2 | start 110 | 49 amino acids | MLVQHCSTMP...
+strand 2 | start 134 | 41 amino acids | MPRFCRDPSR...
+Total: 4
+```
+
+- The 110-letter ORF on strand 1 is the real insulin protein.
+- The 106-letter ORF starts at a later `ATG` in the same reading frame, so it ends at the same stop codon.
+- The ORFs on strand 2 are shorter. A random stretch of DNA reaches 49 codons without a stop codon about 10% of the time, but 110 codons only about 0.5% of the time, so the 110-letter ORF is far more likely to be a real gene.
+- An `ATG` at position 340 is not reported: the sequence ends before any stop codon is reached.
+- Positions on strand 2 are counted from the start of strand 2's own reading, not from strand 1.
+
 ## How to run
 
 You need Python 3 (tested with Python 3.11). In a terminal, in this folder:
@@ -35,7 +59,7 @@ You need Python 3 (tested with Python 3.11). In a terminal, in this folder:
 python sequence_tools.py
 ```
 
-It prints 37 lines of test results and ends with `All tests finished`. Each line was checked against an answer worked out by hand beforehand.
+It prints the test results and ends with `All tests finished`. Each result was checked against an answer worked out by hand beforehand.
 
 ## How it was checked
 
@@ -44,6 +68,7 @@ It prints 37 lines of test results and ends with `All tests finished`. Each line
 - The reverse complement of the reverse complement of the whole gene equals the original sequence.
 - `GAATTC`, the EcoRI cutting site, is its own reverse complement, and `ATGC` is not.
 - The B chain has 2 cysteines and the A chain has 4, matching the known structure of insulin.
+- Small DNA strings with known answers test the ORF functions, including an ORF that is only found on strand 2.
 
 ## What I learned
 
@@ -53,17 +78,18 @@ It prints 37 lines of test results and ends with `All tests finished`. Each line
 
 ## Limits
 
-- Only the letters A, C, G and T are accepted; anything else raises an error.
+- Only the letters A, C, G and T are accepted. The simple functions raise a clear error for anything else, but the ORF search does not yet handle other letters gracefully.
 - It is tested on one gene only.
-- It assumes the protein starts at the first `ATG`. It does not yet search a sequence for genes by itself.
-- The piece positions are written for insulin and are not general.
+- Only complete ORFs are reported (they must end at a stop codon). ORFs inside a longer ORF in the same reading frame are listed separately and are not merged.
+- The piece positions of the insulin protein are written for insulin and are not general.
 - The tests print their results and are checked by eye. There is no automated test framework yet.
 
 ## Next
 
-- An ORF finder that searches for every possible protein, in all three reading frames and on the reverse strand.
+- Merge nested ORFs and report only the longest.
+- Handle invalid letters in the ORF search with clear errors.
 - Automated tests with `assert`.
-- Reading FASTA files directly instead of typing the sequence into the code.
+- Reading FASTA files directly instead of typing the sequence into the code, and running on more sequences.
 
 ## Credits and honesty
 

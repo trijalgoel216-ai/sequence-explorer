@@ -89,3 +89,6 @@ Because short orfs can be just by chance and long can be proetein likely, becaau
 
 30 - what is the difference between print and return?
 the caller fucntion can access the value the return delivers., while print just prints it when the function runs and then forgets it.
+
+31 - why does print_report print, while list_orfs returns?
+becuase we ened to print report to show it the user and dont need anything from the function while we needed a return value from list_orfs function.
