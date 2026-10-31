@@ -67,7 +67,19 @@ An empty string is a real value, and None means “no value”. The point is thi
 Becuause one condtion was always True since a codon cant be all 3 types of stop codon at once and also other types of codon also returned True.with or, one true part makes the whole condition true.
 
 23 - Why does find_orfs call orf_from at every position, and not only at the ATG’s?
-Becuase it is in a loop and checks every letter of the sequence.
+orf_from already returns None when there’s no ATG at that position. So find_orfs doesn’t need to hunt for ATGs separately. It can ask every position and keep only the real answers.
 
 24 - In the result dictionary, what does a key mean, and what does a value mean?
 Key is position and value is protein
+
+25 - why 340 is missing?
+From position 340 the reading runs to the end of the DNA without meeting a stop codon, and ends with a 2-letter leftover, so orf_from returns None.
+
+26 - why can’t I just search the top strand and skip the bottom?
+Beacause oen strand makes diff protein, another strand produces diff protein.Genes can sit on either strand, so if I only search strand 1, I would miss every gene that is on strand 2.
+
+27 - What is the difference between a gene and a genome?
+Genome is the whole DNA of the humans, and gene is part of the genome which makes the proteins. this holds for any organism, not just humans.
+
+28 - what does a position on strand 2 mean?
+These are strand 2's own postions and diff form strand 1

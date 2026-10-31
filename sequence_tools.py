@@ -131,6 +131,10 @@ def find_orfs(dna):
             orfs[position] = answer
     return orfs
 
+def search_both_strands(dna):
+    strands = {"strand 1": find_orfs(dna), "strand 2":find_orfs(reverse_complement(dna))}
+    return strands
+
 
 
 # ---- TESTS ----
@@ -219,6 +223,15 @@ for position in orfs:
     print(position, len(orfs[position]))
 
 print(orf_from(full_sequence, 340))
+
+print(search_both_strands("CCATGGCCTAAGG"))
+print(search_both_strands("TTAGGCCAT"))
+print(search_both_strands("CCCC"))
+
+result = search_both_strands(full_sequence)
+for strand in result:
+    for position in result[strand]:
+        print(strand, position, len(result[strand][position]))
 
 
 print("All tests finished")
