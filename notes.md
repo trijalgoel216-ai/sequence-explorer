@@ -92,3 +92,14 @@ the caller fucntion can access the value the return delivers., while print just 
 
 31 - why does print_report print, while list_orfs returns?
 becuase we ened to print report to show it the user and dont need anything from the function while we needed a return value from list_orfs function.
+
+32 - Why does the program search both strands? Use the TTAGGCCAT example.
+Because any gene may be hiding in either strands.In TTAGGCCAT, strand 1 has no ATG, so searching only strand 1 finds nothing. Strand 2 (ATGGCCTAA) contains the ORF MA. Searching both strands found a gene that one strand hides.
+
+33 - What is the difference between orf_from, find_orfs and search_both_strands? One sentence each.
+orf_from - gives only one orf from the given dna sequence and start position. it returns the protein if a complete ORF starts at that exact position, and None if it doesn’t.
+find_orfs - finds all the orfs starting frome each position and return the orfs which meet all the conditions.it returns a dictionary, with the position as the key and the protein as the value.
+search_both_strands - stores the orfs form both strands in a dictionary using reverse complement fucntion.
+
+34 - Why is the 110-letter ORF more convincing than the 49-letter one?
+Because it is less likely that it was a chance orf due to random stop codons.A random stretch of DNA reaches 110 codons without a stop only about 0.5% of the time, but 49 codons about 10% of the time. So 110 is much less likely to be chance.
