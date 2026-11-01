@@ -120,4 +120,4 @@ I changed search_both_strands. list_orfs and print_report depend on it, so their
 Because checking at the beginning ensures we spot the problem at the surface without going deep and causing a cryptic message. he code inside can then trust the input, and every caller gets the same clear message.”
 
 40 - what does assert do, and why is it better than printing and checking by eye?
-asssert check if eveyrhting in the code is going as expected and if nto , it points the line which is not upto expectations and the programs stops, it helps our check our code. Checking by eye can take forever and also invite mistakes.
+asssert check if eveyrhting in the code is going as expected and if nto , it points the line which is not upto expectations and the programs stops, it helps our check our code. Checking by eye can take forever and also invite mistakes.When I changed the expected value of gc_content("ATGC") to 51.0 on purpose, the program stopped with an AssertionError pointing at that line. A passing run is silent, and a failing one can’t hide.
