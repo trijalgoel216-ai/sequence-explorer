@@ -115,3 +115,6 @@ nested means same orfs which end at same codon, the end formula ehich is  start 
 
 38 - why did some old outputs change on purpose, and how do you check that only the right ones changed?
 I changed search_both_strands. list_orfs and print_report depend on it, so their outputs changed. The functions below it, like find_orfs and merge_nested, didn’t change. Before running, I wrote down which lines should change, and afterwards only those lines differed.
+
+39 - why check the input at the beginning instead of letting it crash later?
+Because checking at the beginning ensures we spot the problem at the surface without going deep and causing a cryptic message. he code inside can then trust the input, and every caller gets the same clear message.”

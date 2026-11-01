@@ -124,6 +124,7 @@ def orf_from(dna, start):
     
 def find_orfs(dna):
     dna = dna.upper()
+    check_dna(dna)
     orfs = {}
     for position in range(len(dna)):
         answer = orf_from(dna, position)
@@ -181,6 +182,12 @@ def merge_nested(orfs):
             seen[end] = True
             kept[position] = protein
     return kept
+
+def check_dna(seq):
+    seq = seq.upper()
+    for letter in seq:
+        if letter not in PAIRS:
+            raise ValueError(f"Invalid DNA letter: {letter}")
 
 
 
@@ -303,5 +310,15 @@ print(list(merge_nested(find_orfs(reverse_complement(full_sequence))).keys()))
 print(list(merge_nested(find_orfs(read_fasta("hbb.fasta"))).keys()))
 
 print_report(read_fasta("hbb.fasta"), 30)
+
+try:
+    print(find_orfs("ATGNNNTAA"))
+except ValueError as error:
+    print("Caught a problem:", error)
+
+try:
+    print(search_both_strands("ATGAAANTAA"))
+except ValueError as error:
+    print("Caught a problem:", error)
 
 print("All tests finished")
