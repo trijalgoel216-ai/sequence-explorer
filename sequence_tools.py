@@ -193,132 +193,126 @@ def check_dna(seq):
 
 # ---- TESTS ----
 
+def raises_value_error(function, argument):
+    try:
+        function(argument)
+    except ValueError:
+        return True
+    return False
+
 #GC CONTENT
-print(gc_content("ATGC"))
-print(gc_content("AAAA"))
-print(gc_content("GGCC"))
-print(gc_content("AGCCCTCCAGGACAGGCTGCATCAGAAGAGGCCATCAAGCAGATCACTGT"))
-print(gc_content(full_sequence))
-print(len(full_sequence))
-print(gc_content("atgc"))
+assert gc_content("ATGC") == 50.0
+assert gc_content("AAAA") == 0.0
+assert gc_content("GGCC") == 100.0
+assert gc_content("AGCCCTCCAGGACAGGCTGCATCAGAAGAGGCCATCAAGCAGATCACTGT") == 56.0
+assert gc_content(full_sequence) == 63.9
+assert len(full_sequence) == 465
+assert gc_content("atgc") == 50.0
 
 #COMPLEMENT
-print(complement("ATGC"))
-print(complement("AAAA"))
-print(complement("GGCC"))
-print(complement("atgc"))
-
-try:
-    print(complement("ATXC"))
-except ValueError as error:
-    print("Caught a problem:", error)
+assert complement("ATGC") == "TACG"
+assert complement("AAAA") == "TTTT"
+assert complement("GGCC") == "CCGG"
+assert complement("atgc") == "TACG"
+assert raises_value_error(complement, "ATXC")
 
 #REVERSE COMPLEMENT
-print(reverse_complement("ATGC"))
-print(reverse_complement("AAAC"))
-print(reverse_complement("GGCC"))
-print(reverse_complement(reverse_complement(full_sequence)) == full_sequence)
-print(reverse_complement("GAATTC") == "GAATTC")
-print(reverse_complement("ATGC") == "ATGC")
-print(reverse_complement("atgc"))
-
-try:
-    print(reverse_complement("ATXC"))
-except ValueError as error:
-    print("Caught a problem:", error)
+assert reverse_complement("ATGC") == "GCAT"
+assert reverse_complement("AAAC") == "GTTT"
+assert reverse_complement("GGCC") == "GGCC"
+assert reverse_complement(reverse_complement(full_sequence)) == full_sequence
+assert reverse_complement("GAATTC") == "GAATTC"
+assert reverse_complement("ATGC") != "ATGC"
+assert reverse_complement("atgc") == "GCAT"
+assert raises_value_error(reverse_complement, "ATXC")
 
 #CODON TABLE
-print(codon_table["GCC"])
-print(codon_table["TAG"])
-print(codon_table["CTG"])
+assert codon_table["GCC"] == "A"
+assert codon_table["TAG"] == "*"
+assert codon_table["CTG"] == "L"
 
 #TRANSLATE
-print(translate("atggccctg"))
-try:
-    print(translate("ATGGC"))
-except ValueError as error:
-    print("Caught a problem:", error)
+assert translate("atggccctg") == "MAL"
+assert raises_value_error(translate, "ATGGC")
 
-#INSULIN TESTS
-print(len(insulin_protein))
-print(f"Signal Peptide - {signal_peptide}: {len(signal_peptide)}")
-print(f"B chain -{b_chain}: {len(b_chain)}")
-print(f"RR Cut Site - {rr}: {len(rr)}")
-print(f"C Peptide - {c_peptide}: {len(c_peptide)}")
-print(f"KR Cut Site - {kr}: {len(kr)}")
-print(f"A Chain - {a_chain}: {len(a_chain)}")
-print(f"C's in Chain B: {b_chain.count('C')}")
-print(f"C's in Chain A: {a_chain.count('C')}")
+#INSULIN
+assert len(insulin_protein) == 110
+assert signal_peptide == "MALWMRLLPLLALLALWGPDPAAA"
+assert b_chain == "FVNQHLCGSHLVEALYLVCGERGFFYTPKT"
+assert rr == "RR"
+assert c_peptide == "EAEDLQVGQVELGGGPGAGSLQPLALEGSLQ"
+assert kr == "KR"
+assert a_chain == "GIVEQCCTSICSLYQLENYCN"
+assert b_chain.count("C") == 2
+assert a_chain.count("C") == 4
 
 #COUNT BASES
+assert count_bases(full_sequence) == {"A": 91, "T": 77, "C": 156, "G": 141}
+assert raises_value_error(count_bases, "ATXC")
 
-print(count_bases(full_sequence))
+#ORF_FROM
+assert orf_from("CCATGGCCTAAGG", 2) == "MA"
+assert orf_from("CCATGGCCGG", 2) is None
+assert orf_from("CCATGGCC", 0) is None
+assert orf_from(full_sequence, start_position) == insulin_protein
+assert orf_from("ATGGCCGCC", 0) is None
+assert orf_from("atggcctaa", 0) == "MA"
+assert orf_from(full_sequence, 340) is None
 
-try:
-    print(count_bases("ATXC"))
-except ValueError as error:
-    print("Caught a problem:", error)
+#FIND_ORFS
+assert find_orfs("CCATGGCCTAAGG") == {2: "MA"}
+assert find_orfs("ATGATGTAA") == {0: "MM", 3: "M"}
+assert find_orfs("CCCC") == {}
+assert find_orfs(full_sequence)[start_position] == insulin_protein
+assert list(find_orfs(full_sequence).keys()) == [59, 71, 441]
+assert len(find_orfs(full_sequence)[71]) == 106
+assert raises_value_error(find_orfs, "ATGNNNTAA")
 
-print(orf_from("CCATGGCCTAAGG", 2))
-print(orf_from("CCATGGCCGG", 2))
-print(orf_from("CCATGGCC", 0))
-print(orf_from(full_sequence, start_position) == insulin_protein)
-print(orf_from("ATGGCCGCC", 0))
-print(orf_from("atggcctaa", 0))
+#CHECK_DNA
+assert check_dna("ATGC") is None
+assert raises_value_error(check_dna, "ATGX")
 
-
-print(find_orfs("CCATGGCCTAAGG"))
-print(find_orfs("ATGATGTAA"))
-print(find_orfs("CCCC"))
-print(find_orfs(full_sequence)[start_position] == insulin_protein)
-
-orfs = find_orfs(full_sequence)
-for position in orfs:
-    print(position, len(orfs[position]))
-
-print(orf_from(full_sequence, 340))
-
-print(search_both_strands("CCATGGCCTAAGG"))
-print(search_both_strands("TTAGGCCAT"))
-print(search_both_strands("CCCC"))
-
+#SEARCH BOTH STRANDS
+assert search_both_strands("CCATGGCCTAAGG") == {"strand 1": {2: "MA"}, "strand 2": {}}
+assert search_both_strands("TTAGGCCAT") == {"strand 1": {}, "strand 2": {0: "MA"}}
+assert search_both_strands("CCCC") == {"strand 1": {}, "strand 2": {}}
 result = search_both_strands(full_sequence)
-for strand in result:
-    for position in result[strand]:
-        print(strand, position, len(result[strand][position]))
+assert list(result["strand 1"].keys()) == [59, 441]
+assert list(result["strand 2"].keys()) == [110, 404]
+assert len(result["strand 1"][59]) == 110
+assert len(result["strand 2"][110]) == 49
+assert raises_value_error(search_both_strands, "ATGAAANTAA")
 
+#LIST_ORFS
+assert len(list_orfs(full_sequence, 30)) == 2
+assert len(list_orfs(full_sequence, 50)) == 1
+assert len(list_orfs(full_sequence, 107)) == 1
+assert len(list_orfs(full_sequence, 111)) == 0
+assert len(list_orfs(full_sequence, 49)) == 2
 
-print(len(list_orfs(full_sequence, 30)))
-print(len(list_orfs(full_sequence, 50)))
-print(len(list_orfs(full_sequence, 107)))
-print(len(list_orfs(full_sequence, 111)))
-print(len(list_orfs(full_sequence, 49)))
+#MERGE_NESTED
+assert merge_nested({0: "MM", 3: "M"}) == {0: "MM"}
+assert merge_nested({2: "MA"}) == {2: "MA"}
+assert merge_nested({}) == {}
+
+#READ_FASTA
+assert len(read_fasta("insulin.fasta")) == 465
+assert read_fasta("insulin.fasta") == full_sequence
+hbb = read_fasta("hbb.fasta")
+assert len(hbb) == 628
+
+#HEMOGLOBIN BETA, checked against NCBI's annotation
+ncbi_protein = "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH"
+assert list(merge_nested(find_orfs(hbb)).keys()) == [50, 114, 240, 468, 570]
+best = list_orfs(hbb, 100)
+assert len(best) == 1
+assert best[0][0] == 147
+assert best[0][1] == "strand 1"
+assert best[0][2] == 50
+assert best[0][3] == ncbi_protein
+assert len(list_orfs(hbb, 30)) == 2
 
 print_report(full_sequence, 30)
-print_report(full_sequence, 111)
+print_report(hbb, 30)
 
-print(len(read_fasta("insulin.fasta")))
-print(read_fasta("insulin.fasta") == full_sequence)
-
-print_report(read_fasta("hbb.fasta"), 100)
-
-print(merge_nested({0: "MM", 3: "M"}))
-print(merge_nested({2: "MA"}))
-print(merge_nested({}))
-print(list(merge_nested(find_orfs(full_sequence)).keys()))
-print(list(merge_nested(find_orfs(reverse_complement(full_sequence))).keys()))
-print(list(merge_nested(find_orfs(read_fasta("hbb.fasta"))).keys()))
-
-print_report(read_fasta("hbb.fasta"), 30)
-
-try:
-    print(find_orfs("ATGNNNTAA"))
-except ValueError as error:
-    print("Caught a problem:", error)
-
-try:
-    print(search_both_strands("ATGAAANTAA"))
-except ValueError as error:
-    print("Caught a problem:", error)
-
-print("All tests finished")
+print("All tests passed")
