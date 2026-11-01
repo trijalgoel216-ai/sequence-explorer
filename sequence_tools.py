@@ -132,7 +132,7 @@ def find_orfs(dna):
     return orfs
 
 def search_both_strands(dna):
-    strands = {"strand 1": find_orfs(dna), "strand 2":find_orfs(reverse_complement(dna))}
+    strands = {"strand 1": merge_nested(find_orfs(dna)), "strand 2":merge_nested(find_orfs(reverse_complement(dna)))}
     return strands
 
 def list_orfs(dna, min_length):
@@ -301,5 +301,7 @@ print(merge_nested({}))
 print(list(merge_nested(find_orfs(full_sequence)).keys()))
 print(list(merge_nested(find_orfs(reverse_complement(full_sequence))).keys()))
 print(list(merge_nested(find_orfs(read_fasta("hbb.fasta"))).keys()))
+
+print_report(read_fasta("hbb.fasta"), 30)
 
 print("All tests finished")

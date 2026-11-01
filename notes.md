@@ -111,4 +111,4 @@ It removes the new line character and any spaces too, we need it to remove any b
 It is easier to read any file automatically rather than pasting it and manually pasting also invites errros.can now run the tool on any gene, not only insulin.
 
 37 - what does “nested” mean, and how does the end formula tell you two ORFs are the same?
-nested means same orfs which end at same codon, the end formula ehich is  start postion + 3*(len(protein)) + 3 tell the end postion of the orf
+nested means same orfs which end at same codon, the end formula ehich is  start postion + 3*(len(protein)) + 3 tell the end postion of the orf. Nested” means an ORF that starts at a later ATG inside a longer ORF, in the same frame, so it ends at the same stop codon. Two ORFs with the same end number are the same ORF.
