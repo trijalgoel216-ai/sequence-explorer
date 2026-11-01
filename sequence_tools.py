@@ -312,6 +312,11 @@ assert best[0][2] == 50
 assert best[0][3] == ncbi_protein
 assert len(list_orfs(hbb, 30)) == 2
 
+#STRAND SYMMETRY
+flipped_hbb = reverse_complement(hbb)
+assert search_both_strands(flipped_hbb)["strand 2"] == search_both_strands(hbb)["strand 1"]
+assert search_both_strands(flipped_hbb)["strand 1"] == search_both_strands(hbb)["strand 2"]
+
 print_report(full_sequence, 30)
 print_report(hbb, 30)
 

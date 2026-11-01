@@ -121,3 +121,9 @@ Because checking at the beginning ensures we spot the problem at the surface wit
 
 40 - what does assert do, and why is it better than printing and checking by eye?
 asssert check if eveyrhting in the code is going as expected and if nto , it points the line which is not upto expectations and the programs stops, it helps our check our code. Checking by eye can take forever and also invite mistakes.When I changed the expected value of gc_content("ATGC") to 51.0 on purpose, the program stopped with an AssertionError pointing at that line. A passing run is silent, and a failing one can’t hide.
+
+41 - Why does the symmetry test prove that strand 2 works?
+Becuase in flipped DNA, Strand 2 is same as Strand 1 in original DNA. And the function finds the gene on that Strand 2 too and the real gene sits on that strand, so a gene on strand 2 is found as well as one on strand 1. 
+
+42 - In the flipped hemoglobin DNA, is the 147-letter ORF found on strand 1 or strand 2? And why?
+In flipped DNA, 147-letter ORF is found in Strand 2 because the labels have flipped.the flipped text’s partner strand is the original text again, and the real gene is in the original text.
