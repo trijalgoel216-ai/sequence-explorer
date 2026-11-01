@@ -16,7 +16,7 @@ A small Python tool that reads a DNA sequence, analyses it, translates it into a
 - `list_orfs(dna, min_length)`: keeps only ORFs of at least `min_length` amino acids and sorts them longest first.
 - `print_report(dna, min_length)`: prints a readable report.
 - Splits the insulin protein into its parts: signal peptide, B chain, C-peptide and A chain.
-- Accepts upper-case and lower-case letters, and raises a clear error for invalid input.
+- Accepts upper-case and lower-case letters. `check_dna(seq)` checks the DNA once at the entrance of the ORF search, so any invalid letter gives one clear error message.
 
 ## The data
 
@@ -65,7 +65,7 @@ You need Python 3 (tested with Python 3.11). In a terminal, in this folder:
 python sequence_tools.py
 ```
 
-It prints the test results and ends with `All tests finished`. Each result was checked against an answer worked out by hand beforehand.
+It runs 78 automated checks (`assert` statements) at the bottom of `sequence_tools.py`, prints two sample ORF reports, and ends with `All tests passed`. If any check fails, the program stops and shows which line failed. Each expected answer was worked out by hand before it was written down.
 
 ## How it was checked
 
@@ -77,6 +77,8 @@ It prints the test results and ends with `All tests finished`. Each result was c
 - Small DNA strings with known answers test the ORF functions, including an ORF that is only found on strand 2.
 - On hemoglobin beta, the ORF the tool found matches NCBI's annotation: the same start, the same length, and the same first letters.
 - When nested ORFs were merged, I wrote down which test outputs should change before running the program. Only those lines changed, and everything else stayed identical.
+- The tests are 78 automated `assert` checks. I also changed one expected value on purpose to see the test fail, to confirm that a wrong answer cannot pass silently.
+- The hemoglobin result is compared with the protein sequence printed in NCBI's own record, letter for letter.
 
 ## What I learned
 
@@ -86,16 +88,15 @@ It prints the test results and ends with `All tests finished`. Each result was c
 
 ## Limits
 
-- Only the letters A, C, G and T are accepted. The simple functions raise a clear error for anything else, but the ORF search does not yet handle other letters gracefully.
+- Only the letters A, C, G and T are accepted. Every function raises a clear error for anything else, including `N` (unknown base), so DNA files with unknown bases are not supported yet.
 - It is tested on two genes only (insulin and hemoglobin beta).
 - Only complete ORFs are reported (they must end at a stop codon). Only ORFs that share a stop codon are merged, so ORFs in different reading frames can still overlap.
 - The piece positions of the insulin protein are written for insulin and are not general.
-- The tests print their results and are checked by eye. There is no automated test framework yet.
+- The tests are plain `assert` checks that the file runs itself. They are not a test framework such as pytest, and they live in the same file as the code.
 
 ## Next
 
-- Handle invalid letters in the ORF search with clear errors.
-- Automated tests with `assert`.
+- Move the tests into their own file.
 - Run it on more genes and compare each result with NCBI's annotation.
 
 ## Credits and honesty
