@@ -127,3 +127,12 @@ Becuase in flipped DNA, Strand 2 is same as Strand 1 in original DNA. And the fu
 
 42 - In the flipped hemoglobin DNA, is the 147-letter ORF found on strand 1 or strand 2? And why?
 In flipped DNA, 147-letter ORF is found in Strand 2 because the labels have flipped.the flipped text’s partner strand is the original text again, and the real gene is in the original text.
+
+43 - why is it a stronger test that your tool predicted NCBI’s label than that you matched it afterwards?
+The expected values in my tests of the three genes come from NCBI, which I don’t control. My tool could have disagreed with NCBI and didn’t. That is stronger than a test where I copy the expected value from my own program’s output, which could only show that the program hasn’t changed.
+
+44 - what does from sequence_tools import ... do, and why separate the tools from the tests?
+It imports the functions and tools from sequence_tools file so it can use them in the test file, it is supported so any random person can use tools file and test on their own in their own file as they want.
+
+45 - what is sys.argv, and what does if __name__ == "__main__" protect?
+sys,argv stores the words we enter in CLI, the guard protects that the file doesnt runs when it is imported, it should only run when called directly. sys.argv is a list of text words, and position 0 is the file name itself, so your first typed word is at position 1. The guard specifically stops main() from running when another file imports yours.

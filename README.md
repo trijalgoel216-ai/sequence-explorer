@@ -1,6 +1,6 @@
 # sequence-explorer
 
-A small Python tool that reads a DNA sequence, analyses it, translates it into a protein, and searches both DNA strands for possible genes. It is a learning project, built step by step and tested on two genes: human insulin and human hemoglobin beta.
+A small Python tool that reads a DNA sequence, analyses it, translates it into a protein, and searches both DNA strands for possible genes. It is a learning project, built step by step and tested on three human genes: insulin, hemoglobin beta and hemoglobin alpha 1.
 
 ## What it does
 
@@ -15,6 +15,7 @@ A small Python tool that reads a DNA sequence, analyses it, translates it into a
 - `search_both_strands(dna)`: searches the DNA as given (strand 1) and its partner strand (strand 2), keeping only the longest ORF for each stop codon.
 - `list_orfs(dna, min_length)`: keeps only ORFs of at least `min_length` amino acids and sorts them longest first.
 - `print_report(dna, min_length)`: prints a readable report.
+- `main()`: lets you run the tool from the command line.
 - Splits the insulin protein into its parts: signal peptide, B chain, C-peptide and A chain.
 - Accepts upper-case and lower-case letters. `check_dna(seq)` checks the DNA once at the entrance of the ORF search, so any invalid letter gives one clear error message.
 
@@ -57,15 +58,44 @@ I ran the tool on human hemoglobin beta (`NM_000518.5`, saved as `hbb.fasta`, 62
 
 A 92-amino-acid ORF in the same reading frame (a later `ATG` inside the same ORF) is merged into it. The report also lists an ORF of 39 amino acids in a different frame, which is most likely chance: a random stretch of DNA reaches 39 codons without a stop codon about 15% of the time, but 147 codons only about 0.09% of the time. With a minimum length of 100, only the real ORF remains.
 
+## A third gene: hemoglobin alpha 1
+
+I ran the tool on human hemoglobin alpha 1 (`NM_000558.5`, saved as `hba1.fasta`, 577 letters). The tool reported one ORF of at least 100 amino acids: start 37 (counting from 0), 142 amino acids, starting `MVLSPADKTN`. From that, I worked out that NCBI's annotation should read `CDS 38..466`, and I then checked NCBI's record: it says exactly that, and NCBI's protein translation is identical to the one the tool found, letter for letter.
+
 ## How to run
 
 You need Python 3 (tested with Python 3.11). In a terminal, in this folder:
 
+**Run the tool on a FASTA file.** The first word is the file, and the second is the minimum ORF length in amino acids:
+
 ```
-python sequence_tools.py
+python sequence_tools.py hbb.fasta 100
 ```
 
-It runs 78 automated checks (`assert` statements) at the bottom of `sequence_tools.py`, prints two sample ORF reports, and ends with `All tests passed`. If any check fails, the program stops and shows which line failed. Each expected answer was worked out by hand before it was written down.
+which prints:
+
+```
+ORF report: minimum length 100 amino acids
+strand 1 | start 50 | 147 amino acids | MVHLTPEEKS...
+Total: 1
+```
+
+If you give no file, it prints a usage message.
+
+**Run the tests:**
+
+```
+python test_sequence_tools.py
+```
+
+It runs 89 automated checks (`assert` statements), prints two sample ORF reports, and ends with `All tests passed`. If any check fails, the program stops and shows which line failed. Each expected answer was worked out by hand before it was written down.
+
+## Files
+
+- `sequence_tools.py`: the tools (the functions) and the command-line entry point.
+- `test_sequence_tools.py`: the automated tests and the insulin data they use.
+- `insulin.fasta`, `hbb.fasta`, `hba1.fasta`: the three genes, downloaded from NCBI.
+- `notes.md`: my notes, in my own words.
 
 ## How it was checked
 
@@ -76,8 +106,10 @@ It runs 78 automated checks (`assert` statements) at the bottom of `sequence_too
 - The B chain has 2 cysteines and the A chain has 4, matching the known structure of insulin.
 - Small DNA strings with known answers test the ORF functions, including an ORF that is only found on strand 2.
 - On hemoglobin beta, the ORF the tool found matches NCBI's annotation: the same start, the same length, and the same first letters.
+- On hemoglobin alpha 1, the tool's result predicted NCBI's `CDS 38..466` line before I looked at it, and its protein matches NCBI's translation letter for letter.
+- Flipping a sequence with `reverse_complement` moves its genes to the other strand, and the tool reports exactly the same ORFs with the strand labels swapped. This is tested on all three genes, so strand 2 is checked on real data and not only on short strings.
 - When nested ORFs were merged, I wrote down which test outputs should change before running the program. Only those lines changed, and everything else stayed identical.
-- The tests are 78 automated `assert` checks. I also changed one expected value on purpose to see the test fail, to confirm that a wrong answer cannot pass silently.
+- The tests are 89 automated `assert` checks. I also changed one expected value on purpose to see the test fail, to confirm that a wrong answer cannot pass silently.
 - The hemoglobin result is compared with the protein sequence printed in NCBI's own record, letter for letter.
 
 ## What I learned
@@ -89,14 +121,15 @@ It runs 78 automated checks (`assert` statements) at the bottom of `sequence_too
 ## Limits
 
 - Only the letters A, C, G and T are accepted. Every function raises a clear error for anything else, including `N` (unknown base), so DNA files with unknown bases are not supported yet.
-- It is tested on two genes only (insulin and hemoglobin beta).
+- It is tested on three human genes only (insulin, hemoglobin beta and hemoglobin alpha 1), all from NCBI RefSeq mRNA records.
 - Only complete ORFs are reported (they must end at a stop codon). Only ORFs that share a stop codon are merged, so ORFs in different reading frames can still overlap.
 - The piece positions of the insulin protein are written for insulin and are not general.
-- The tests are plain `assert` checks that the file runs itself. They are not a test framework such as pytest, and they live in the same file as the code.
+- The tests are plain `assert` checks in their own file. They are not a test framework such as pytest.
+- The command-line version does not yet give friendly messages for a missing file or a minimum length that is not a number.
 
 ## Next
 
-- Move the tests into their own file.
+- Friendly error messages for a missing file or a bad minimum length.
 - Run it on more genes and compare each result with NCBI's annotation.
 
 ## Credits and honesty
