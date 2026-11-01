@@ -171,6 +171,19 @@ def read_fasta(path):
         return sequence
 
 
+def merge_nested(orfs):
+    kept = {}
+    seen = {}
+    for position in orfs:
+        protein = orfs[position]
+        end = position + 3 * len(protein) + 3
+        if end not in seen:
+            seen[end] = True
+            kept[position] = protein
+    return kept
+
+
+
 # ---- TESTS ----
 
 #GC CONTENT
@@ -281,5 +294,12 @@ print(len(read_fasta("insulin.fasta")))
 print(read_fasta("insulin.fasta") == full_sequence)
 
 print_report(read_fasta("hbb.fasta"), 100)
+
+print(merge_nested({0: "MM", 3: "M"}))
+print(merge_nested({2: "MA"}))
+print(merge_nested({}))
+print(list(merge_nested(find_orfs(full_sequence)).keys()))
+print(list(merge_nested(find_orfs(reverse_complement(full_sequence))).keys()))
+print(list(merge_nested(find_orfs(read_fasta("hbb.fasta"))).keys()))
 
 print("All tests finished")
