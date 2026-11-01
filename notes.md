@@ -112,3 +112,6 @@ It is easier to read any file automatically rather than pasting it and manually 
 
 37 - what does “nested” mean, and how does the end formula tell you two ORFs are the same?
 nested means same orfs which end at same codon, the end formula ehich is  start postion + 3*(len(protein)) + 3 tell the end postion of the orf. Nested” means an ORF that starts at a later ATG inside a longer ORF, in the same frame, so it ends at the same stop codon. Two ORFs with the same end number are the same ORF.
+
+38 - why did some old outputs change on purpose, and how do you check that only the right ones changed?
+I changed search_both_strands. list_orfs and print_report depend on it, so their outputs changed. The functions below it, like find_orfs and merge_nested, didn’t change. Before running, I wrote down which lines should change, and afterwards only those lines differed.
