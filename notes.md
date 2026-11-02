@@ -136,3 +136,6 @@ It imports the functions and tools from sequence_tools file so it can use them i
 
 45 - what is sys.argv, and what does if __name__ == "__main__" protect?
 sys,argv stores the words we enter in CLI, the guard protects that the file doesnt runs when it is imported, it should only run when called directly. sys.argv is a list of text words, and position 0 is the file name itself, so your first typed word is at position 1. The guard specifically stops main() from running when another file imports yours.
+
+46 - why do we catch errors in main() and not inside the other functions?
+Functions raise errors because they don’t know who called them. A test needs the error raised, and a user needs a readable message. main() is the one that faces the user, so it catches the errors and decides what to print.

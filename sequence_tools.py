@@ -164,8 +164,19 @@ def main():
         return
     else:
         file_name = sys.argv[1]
-        min_length = int(sys.argv[2])
-        print_report(read_fasta(file_name), min_length)
+        try:
+            min_length = int(sys.argv[2])
+        except ValueError:
+            print("Error: MIN_LENGTH must be a whole number, for example 100.")
+            return
+        
+        try:
+            print_report(read_fasta(file_name), min_length)
+        except FileNotFoundError:
+            print(f"Error: file '{file_name}' not found")
+        except ValueError as error:
+            print("Error:", error)
+
 
 if __name__ == "__main__":
     main()
