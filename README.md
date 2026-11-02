@@ -80,7 +80,7 @@ strand 1 | start 50 | 147 amino acids | MVHLTPEEKS...
 Total: 1
 ```
 
-If you give no file, it prints a usage message.
+If you give no file, it prints a usage message. If the file is missing, the minimum length is not a whole number, or the DNA contains a letter other than A, C, G and T, it prints one clear error line instead of a long error trace.
 
 **Run the tests:**
 
@@ -125,11 +125,10 @@ It runs 89 automated checks (`assert` statements), prints two sample ORF reports
 - Only complete ORFs are reported (they must end at a stop codon). Only ORFs that share a stop codon are merged, so ORFs in different reading frames can still overlap.
 - The piece positions of the insulin protein are written for insulin and are not general.
 - The tests are plain `assert` checks in their own file. They are not a test framework such as pytest.
-- The command-line version does not yet give friendly messages for a missing file or a minimum length that is not a number.
 
 ## Next
 
-- Friendly error messages for a missing file or a bad minimum length.
+- Accept unknown bases (`N`) instead of stopping with an error.
 - Run it on more genes and compare each result with NCBI's annotation.
 
 ## Credits and honesty
