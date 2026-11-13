@@ -135,4 +135,4 @@ It runs 89 automated checks (`assert` statements), prints two sample ORF reports
 
 - The gene sequences come from NCBI, a public database.
 - The codon table is the standard genetic code. It was provided to me, not written by me.
-- This is a learning project. I wrote the functions and the tests myself, with an AI tutor (Claude) that explained concepts, set exercises and reviewed my code.
+- This is a learning project, built step by step with an AI tutor (Claude). I wrote the first versions of gc_content and reverse_complement myself; the rest was built together, with Claude explaining concepts, setting exercises, reviewing my code and writing some parts with me. I am rewriting gc_content, reverse_complement and count_bases from memory to check that I understand them, and a fuller “How this was built” section will follow.
