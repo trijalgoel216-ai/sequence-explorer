@@ -97,6 +97,9 @@ assert a_chain.count("C") == 4
 #COUNT BASES
 assert count_bases(full_sequence) == {"A": 91, "T": 77, "C": 156, "G": 141}
 assert raises_value_error(count_bases, "ATXC")
+assert count_bases("AATGC") == {"A": 2, "T": 1, "G": 1, "C": 1}
+assert count_bases("aatgc") == {"A": 2, "T": 1, "G": 1, "C": 1}
+assert count_bases("") == {"A": 0, "T": 0, "C": 0, "G": 0}
 
 #ORF_FROM
 assert orf_from("CCATGGCCTAAGG", 2) == "MA"

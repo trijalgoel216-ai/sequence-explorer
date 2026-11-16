@@ -88,7 +88,7 @@ If you give no file, it prints a usage message. If the file is missing, the mini
 python test_sequence_tools.py
 ```
 
-It runs 89 automated checks (`assert` statements), prints two sample ORF reports, and ends with `All tests passed`. If any check fails, the program stops and shows which line failed. Each expected answer was worked out by hand before it was written down.
+It runs 92 automated checks (`assert` statements), prints two sample ORF reports, and ends with `All tests passed`. If any check fails, the program stops and shows which line failed. Each expected answer was worked out by hand before it was written down.
 
 ## Files
 
@@ -96,6 +96,17 @@ It runs 89 automated checks (`assert` statements), prints two sample ORF reports
 - `test_sequence_tools.py`: the automated tests and the insulin data they use.
 - `insulin.fasta`, `hbb.fasta`, `hba1.fasta`: the three genes, downloaded from NCBI.
 - `notes.md`: my notes, in my own words.
+
+## How this was built
+
+I built this project step by step, and I wrote each function and each test myself. For every step the order was the same:
+
+1. Work out the expected answer by hand first. For example, I counted the GC content of the first 50 letters by hand, and translated the first and last codons of insulin by hand.
+2. Write the test with that expected answer.
+3. Write the function and run the test.
+4. Run the tool on a real gene from NCBI and compare the result with NCBI's own annotation.
+
+I used an AI tutor (Claude) to explain concepts, set exercises and review my code. It did not write my functions or my tests. The codon table was provided to me.
 
 ## How it was checked
 
@@ -109,7 +120,7 @@ It runs 89 automated checks (`assert` statements), prints two sample ORF reports
 - On hemoglobin alpha 1, the tool's result predicted NCBI's `CDS 38..466` line before I looked at it, and its protein matches NCBI's translation letter for letter.
 - Flipping a sequence with `reverse_complement` moves its genes to the other strand, and the tool reports exactly the same ORFs with the strand labels swapped. This is tested on all three genes, so strand 2 is checked on real data and not only on short strings.
 - When nested ORFs were merged, I wrote down which test outputs should change before running the program. Only those lines changed, and everything else stayed identical.
-- The tests are 89 automated `assert` checks. I also changed one expected value on purpose to see the test fail, to confirm that a wrong answer cannot pass silently.
+- The tests are 92 automated `assert` checks. I also changed one expected value on purpose to see the test fail, to confirm that a wrong answer cannot pass silently.
 - The hemoglobin result is compared with the protein sequence printed in NCBI's own record, letter for letter.
 
 ## What I learned
